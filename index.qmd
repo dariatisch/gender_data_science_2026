@@ -21,7 +21,7 @@ Hier findet Ihr alle Unterlagen zum Download bzw. Anschauen:
 
 ### Sitzung 2: Der männliche Prototyp
 * [Vorlesungsfolien (PDF)](slides_pdf/02a_gender_data_science.pdf)
-
+* [Übungsfolien (Quarto)](slides_quarto/02b_gender_data_science.html)
 
 ### Sitzung 3: Datenfeminismus
 
