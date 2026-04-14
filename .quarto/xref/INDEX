@@ -1,5 +1,8 @@
 {
   "index.qmd": {
     "index.html": "e7921512"
+  },
+  "slides_quarto/02b_gender_data_science.qmd": {
+    "02b_gender_data_science.html": "d0a5cc19"
   }
 }

@@ -1,0 +1,271 @@
+---
+title: "Gender Aspekte der Data Science"
+subtitle: "Sitzung 2b: Themensuche | Daten extrahieren | Forschungsdatenmanagement"
+author: "Daria Tisch"
+format: 
+  revealjs:
+    theme: solarized
+    transition: slide
+    scrollable: true
+    code-line-numbers: true
+execute:
+  echo: true
+  warning: false
+---
+
+## Ziel für diese Sitzung
+Wir untersuchen einen **Gender Data Gap** in einer der größten freien Wissensdatenbanken der Welt, Wikidata.
+
+--- 
+
+## 🔎 Forschungsfrage
+
+Wie groß ist der Gender Gap bei deutschen Menschen auf Wikidata ?
+
+
+
+---
+
+## 🛠️ Werkzeuge
+
+Für die Analyse mit **R** nutzen wir zwei Hauptzugänge:
+
+1.  **Wikidata (SPARQL):** Für strukturierte Daten (Geburtsdaten, Berufe, Geschlecht). Paket: `WikidataR`.
+2.  **Wikipedia (API):** Für unstrukturierte Textdaten (Artikellänge, Edits). Paket: `WikipediR` oder `pageviews`.
+
+---
+
+## Wikidata: Strukturierte Daten
+
+Wikidata speichert Informationen in **Triplen** (Subjekt - Prädikat - Objekt). 
+Um diese abzufragen, nutzen wir **SPARQL**.
+
+### Wichtige IDs:
+* `P21`: Geschlecht (Property)
+* `Q6581072`: Weiblich (Item)
+* `Q6581097`: Männlich (Item)
+* `P31`: "Ist ein(e)" (z.B. Q5 - Mensch)
+
+---
+
+## Wikidata Page: Caroline Criado-Perez
+
+<iframe src="https://www.wikidata.org/wiki/Q14945692" width="100%" height="500px">
+
+</iframe>
+
+[Caroline Criado-Perez](https://www.wikidata.org/wiki/Q14945692)
+
+---
+
+## Queries
+
+<iframe src="https://query.wikidata.org/" width="100%" height="500px">
+
+</iframe>
+
+[Wikidata Query Service](https://query.wikidata.org/)
+
+---
+
+## Query: Welchen Beruf hat Caroline?
+
+<iframe src="https://w.wiki/LDMG" width="100%" height="500px">
+
+</iframe>
+
+[Link to query](https://w.wiki/LDMG)
+
+
+---
+
+## Query: Welche Staatsbürgerschaft hat Caroline und wo wurde sie geboren?
+
+<iframe src="https://w.wiki/LDMR" width="100%" height="500px">
+
+</iframe>
+
+[Link to query](https://w.wiki/LDMR)
+
+
+
+---
+
+## Query: Gender Gap bei Deutschen auf Wikidata
+
+<iframe src="https://w.wiki/LDLi" width="100%" height="500px">
+
+</iframe>
+
+[Link to query](https://w.wiki/LDLi)
+
+---
+
+## 📦 Setup
+
+```{r}
+library(WikidataR)
+library(WikipediR)
+library(pageviews)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(purrr)
+library(httr)
+library(jsonlite)
+```
+
+
+--- 
+
+## Gender Gap Query in R
+```{r}
+sparql_query = '
+SELECT ?genderLabel ?count
+WHERE {
+  {
+    SELECT ?gender (COUNT(?person) AS ?count) WHERE {
+      ?person wdt:P31 wd:Q5 .
+      ?person wdt:P27 wd:Q183 .
+      ?person wdt:P21 ?gender .
+    }
+    GROUP BY ?gender
+  }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". }
+}
+ORDER BY DESC(?count)
+'
+```
+
+---
+
+## 🚀 Anfrage an Wikidata API
+```{r}
+df_raw = query_wikidata(sparql_query, format = c("tibble"))
+df_raw
+```
+
+--- 
+
+## Datenaufbereitung
+```{r}
+names(df_raw)
+df = df_raw %>%
+  mutate(
+    gender = genderLabel,
+    count = as.numeric(count) 
+    )%>%
+        filter(count > 50)
+  
+df
+```
+
+
+--- 
+
+## Datenvisualisierung
+```{r}
+plot_wikidata = ggplot(df, aes(x = reorder(gender, count), y = count, fill = gender)) +
+  geom_col(width = 0.7, show.legend = FALSE) +
+  coord_flip() +
+  
+  # Farbpalette
+  scale_fill_brewer(palette = "Set2") +
+  
+  # Labels
+  labs(
+    title = "Geschlechterverteilung deutscher Personen in Wikidata",
+    subtitle = "Datenquelle: Wikidata Query Service",
+    x = "Geschlecht",
+    y = "Anzahl"
+  ) +
+  
+  # Minimaler, moderner Theme-Stil
+  theme_minimal(base_size = 14) +
+  
+  theme(
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(size = 12, color = "gray40"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.major.y = element_blank(),
+    panel.grid.minor = element_blank(),
+    plot.margin = margin(10, 15, 10, 15)
+  )
+```
+
+--- 
+
+## Datenvisualisierung
+```{r}
+#| echo: false
+
+plot_wikidata
+```
+
+
+
+--- 
+
+## Gender Data Gap
+```{r}
+df_gap = df  %>%
+  select(-genderLabel) %>%
+  pivot_wider(names_from = gender, values_from = count) %>%
+  rename(male = männlich,
+         female =weiblich) %>%
+  mutate(
+    absolute_gap = male - female,
+    ratio_male_female = male / female,
+    female_share = female / (male + female)
+  )
+
+df_gap
+```
+
+---
+
+```{r}
+#| echo: false
+
+plot_df <- df_gap %>%
+  tidyr::pivot_longer(cols = c(male, female),
+                      names_to = "gender",
+                      values_to = "count")
+
+ggplot(plot_df, aes(x = gender, y = count, fill = gender)) +
+  geom_col(width = 0.6) +
+  
+  # Werte auf Balken
+  geom_text(aes(label = count), vjust = -0.4, size = 5) +
+  
+  # Farben
+  scale_fill_manual(values = c(
+    male = "#4ea8de",
+    female = "#f72585"
+  )) +
+  
+  labs(
+    title = "Gender Gap in Wikidata (deutsche Personen)",
+    subtitle = paste0(
+      "Gap (male - female): ", df_gap$absolute_gap,
+      " | Ratio: ", round(df_gap$ratio_male_female, 2),
+      " | Female Share: ", round(100 * df_gap$female_share, 1), "%"
+    ),
+    x = NULL,
+    y = "Anzahl"
+  ) +
+  
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "none",
+    plot.title = element_text(face = "bold", size = 18),
+    plot.subtitle = element_text(color = "gray40"),
+    panel.grid.major.x = element_blank()
+  )
+```
+
+
+---
+## The end
+
