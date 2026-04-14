@@ -10,6 +10,10 @@ Dozentin: [Daria Tisch](https://dariatisch.github.io/), Sprechstunde nach Verein
 
 Hier findet Ihr alle Unterlagen zum Download bzw. Anschauen:
 
+### Syllabus: Gender-Aspekte der Data Science
+* [Syllabus (PDF)](slides_pdf/syllabus_gender_data_science_SS_2026.pdf)
+
+
 ### Sitzung 1: Einführung
 * [Vorlesungsfolien (PDF)](slides_pdf/01a_gender_data_science.pdf)
 * [Vorlesungsfolien mit Notizen (PDF)](slides_pdf/01a_gender_data_science_mit_notizen.pdf)
