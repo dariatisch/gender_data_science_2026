@@ -1,0 +1,33 @@
+---
+title: "Willkommen zum Kurs: Gender Aspekte der Data Science"
+---
+
+Dies ist die Website zum Kurs "Gender Aspekte der Data Science" im Studiengang Social Data Science & Communication (B. Sc.) an der Technische Hochschule Nürnberg Georg Simon Ohm (Sommersemester 2026).
+
+Dozentin: [Daria Tisch](https://dariatisch.github.io/), Sprechstunde nach Vereinbarung per Zoom.
+
+## Kursmaterialien
+
+Hier findet Ihr alle Unterlagen zum Download bzw. Anschauen:
+
+### Sitzung 1: Einführung
+* [Vorlesungsfolien (PDF)](slides_pdf/01a_gender_data_science.pdf)
+* [Vorlesungsfolien mit Notizen (PDF)](slides_pdf/01a_gender_data_science_mit_notizen.pdf)
+* [Übungsfolien (PDF)](slides_pdf/01b_gender_data_science.pdf)
+
+### Sitzung 2: Der männliche Prototyp
+* [Vorlesungsfolien (PDF)](slides_pdf/02a_gender_data_science.pdf)
+
+
+### Sitzung 3: Datenfeminismus
+
+### Sitzung 4: Gender Bias im gesamten Datenprozess
+
+### Sitzung 5: Thematische Vertiefung – Gender Bias im Gesundheitsbereich
+
+### Sitzung 6: Online-Fragestunde & Projektunterstützung
+
+### Sitzung 7: Thematische Vertiefung – Algorithmische Diskriminierung
+
+### Sitzung 8: Projektpräsentationen & Reflexion
+

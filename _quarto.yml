@@ -1,0 +1,44 @@
+project:
+  render:
+    - "*.qmd"
+    - "!/downloads"
+  type: website
+  output-dir: docs
+
+website:
+  page-navigation: false
+  title: "Gender Aspekte der Data Science"
+
+  page-footer:
+    right: "This page is built with 💙 and [Quarto](https://quarto.org/)."
+    left: "&copy; Copyright 2026, Daria Tisch"
+    background: "#20a1a1"
+
+  sidebar:
+    background: "#20a1a1"
+    # logo: "images/logo.png"
+    pinned: true
+    align: center
+    tools:
+      - icon: github
+        href: https://github.com/dariatisch/wup2024
+        text: GitHub
+    style: docked
+    search: false
+    collapse-level: 1
+
+ 
+format:
+  html:
+    theme: cosmo
+    lang: de
+    # css: styles.css
+    toc: true
+    toc-location: left
+    linkcolor: "#20a1a1"
+
+
+execute:
+  freeze: auto
+
+
