@@ -21,7 +21,7 @@ website:
     align: center
     tools:
       - icon: github
-        href: https://github.com/dariatisch/wup2024
+        href: https://github.com/dariatisch/gender_data_science_2026
         text: GitHub
     style: docked
     search: false
