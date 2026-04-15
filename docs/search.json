@@ -53,7 +53,7 @@
     "href": "slides_quarto/02b_gender_data_science.html#gender-data-gap",
     "title": "Gender Aspekte der Data Science",
     "section": "Gender Data Gap",
-    "text": "Gender Data Gap\n\ndf_gap = df  %&gt;%\n  select(-genderLabel) %&gt;%\n  pivot_wider(names_from = gender, values_from = count) %&gt;%\n  rename(male = männlich,\n         female =weiblich) %&gt;%\n  mutate(\n    absolute_gap = male - female,\n    ratio_male_female = male / female,\n    female_share = female / (male + female)\n  )\n\ndf_gap\n\n# A tibble: 1 × 5\n    male female absolute_gap ratio_male_female female_share\n   &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;             &lt;dbl&gt;        &lt;dbl&gt;\n1 246334  78699       167635              3.13        0.242"
+    "text": "Gender Data Gap\n\ndf_gap = df  %&gt;%\n  select(-genderLabel) %&gt;%\n  pivot_wider(names_from = gender, values_from = count) %&gt;%\n  rename(male = männlich,\n         female =weiblich) %&gt;%\n  mutate(\n    absolute_gap = male - female,\n    ratio_male_female = male / female,\n    female_share = female / (male + female)\n  )\n\ndf_gap\n\n# A tibble: 1 × 5\n    male female absolute_gap ratio_male_female female_share\n   &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;             &lt;dbl&gt;        &lt;dbl&gt;\n1 246365  78703       167662              3.13        0.242"
   },
   {
     "objectID": "slides_quarto/02b_gender_data_science.html#forschungsfragen",
@@ -144,14 +144,14 @@
     "href": "slides_quarto/02b_gender_data_science.html#anfrage-an-wikidata-api",
     "title": "Gender Aspekte der Data Science",
     "section": "🚀 Anfrage an Wikidata API",
-    "text": "🚀 Anfrage an Wikidata API\n\ndf_raw = query_wikidata(sparql_query, format = c(\"tibble\"))\ndf_raw\n\n# A tibble: 46 × 2\n   genderLabel             count \n   &lt;chr&gt;                   &lt;chr&gt; \n 1 männlich                246334\n 2 weiblich                78699 \n 3 nichtbinär              46    \n 4 Transfrau               41    \n 5 Transmann               10    \n 6 neutrales Geschlecht    4     \n 7 Intergeschlechtlichkeit 3     \n 8 Agender                 3     \n 9 Transfeminin            2     \n10 Cisfrau                 2     \n# ℹ 36 more rows"
+    "text": "🚀 Anfrage an Wikidata API\n\ndf_raw = query_wikidata(sparql_query, format = c(\"tibble\"))\ndf_raw\n\n# A tibble: 46 × 2\n   genderLabel             count \n   &lt;chr&gt;                   &lt;chr&gt; \n 1 männlich                246365\n 2 weiblich                78703 \n 3 nichtbinär              46    \n 4 Transfrau               41    \n 5 Transmann               10    \n 6 neutrales Geschlecht    4     \n 7 Intergeschlechtlichkeit 3     \n 8 Agender                 3     \n 9 Cisfrau                 2     \n10 Transfeminin            2     \n# ℹ 36 more rows"
   },
   {
     "objectID": "slides_quarto/02b_gender_data_science.html#datenaufbereitung",
     "href": "slides_quarto/02b_gender_data_science.html#datenaufbereitung",
     "title": "Gender Aspekte der Data Science",
     "section": "Datenaufbereitung",
-    "text": "Datenaufbereitung\n\nnames(df_raw)\n\n[1] \"genderLabel\" \"count\"      \n\ndf = df_raw %&gt;%\n  mutate(\n    gender = genderLabel,\n    count = as.numeric(count) \n    )%&gt;%\n        filter(count &gt; 50)\n  \ndf\n\n# A tibble: 2 × 3\n  genderLabel  count gender  \n  &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;   \n1 männlich    246334 männlich\n2 weiblich     78699 weiblich"
+    "text": "Datenaufbereitung\n\nnames(df_raw)\n\n[1] \"genderLabel\" \"count\"      \n\ndf = df_raw %&gt;%\n  mutate(\n    gender = genderLabel,\n    count = as.numeric(count) \n    )%&gt;%\n        filter(count &gt; 50)\n  \ndf\n\n# A tibble: 2 × 3\n  genderLabel  count gender  \n  &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;   \n1 männlich    246365 männlich\n2 weiblich     78703 weiblich"
   },
   {
     "objectID": "slides_quarto/02b_gender_data_science.html#datenvisualisierung",
@@ -229,5 +229,166 @@
     "title": "Gender Aspekte der Data Science",
     "section": "🔎 Forschungsfrage",
     "text": "🔎 Forschungsfrage\nWie groß ist der Gender Gap bei deutschen Menschen auf Wikidata ?"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#was-ist-forschungsdatenmanagement",
+    "href": "slides_quarto/02b_gender_data_science.html#was-ist-forschungsdatenmanagement",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Was ist Forschungsdatenmanagement?",
+    "text": "Was ist Forschungsdatenmanagement?\n\n“Gesundheitsvorsorge” für Daten\nSchützt die Daten vor Schaden\nMacht Daten funktional, nutzbar und auffindbar\nAlle Strategien, Prozesse und Maßnahmen zum Sammeln, Organisieren, Strukturieren, Speichern, Analysieren, Veröffentlichen, Weitergeben und Archivieren von Informationen, die im Rahmen eines Forschungsprojekts verwendet oder erzeugt werden\nBehandelt auch rechtliche und ethische Fragen (z. B. Einwilligungserklärungen, Eigentum, Lizenzierung)"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#übersicht-forschungsdatenmanagement",
+    "href": "slides_quarto/02b_gender_data_science.html#übersicht-forschungsdatenmanagement",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Übersicht: Forschungsdatenmanagement",
+    "text": "Übersicht: Forschungsdatenmanagement"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#warum-forschungsdatenmanagement",
+    "href": "slides_quarto/02b_gender_data_science.html#warum-forschungsdatenmanagement",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Warum Forschungsdatenmanagement?",
+    "text": "Warum Forschungsdatenmanagement?\n\nVerbessert Arbeitsabläufe\nMinimiert das Risiko von Datenverlusten\nGute wissenschaftliche Praxis\nErhält Datenqualität\nSpart Ressourcen"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#konkrete-anwendung",
+    "href": "slides_quarto/02b_gender_data_science.html#konkrete-anwendung",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Konkrete Anwendung",
+    "text": "Konkrete Anwendung\n\nTeamprojekt mit Skript und Git\n\nGute Praktiken der Dateiverwaltung & -benennung\nGute Dokumentation des Codes"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#ordnerstruktur",
+    "href": "slides_quarto/02b_gender_data_science.html#ordnerstruktur",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Ordnerstruktur",
+    "text": "Ordnerstruktur\nSinnvole Ordnerstruktur anlegen\nZum Beispiel\ngender-bias-wikidata/ │ ├── data/ │ ├── raw/ # unbearbeitete Originaldaten (z. B. API-Downloads) │ ├── processed/ # bereinigte/aufbereitete Daten │ └── metadata/ # Beschreibungen, Variablenlisten │ ├── R/ │ ├── data_cleaning.R # Datenaufbereitung │ ├── analysis.R # Analysen (Modelle, Tests) │ └── functions.R # eigene Funktionen │ ├── quarto/ │ ├── index.qmd # Hauptdokument (Bericht) │ ├── 01_intro.qmd │ ├── 02_methods.qmd │ ├── 03_results.qmd │ └── 04_discussion.qmd │ ├── output/ │ ├── figures/ # Grafiken │ ├── tables/ # Tabellen │ └── report/ # fertiger HTML/PDF-Bericht"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#abgaben",
+    "href": "slides_quarto/02b_gender_data_science.html#abgaben",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Abgaben",
+    "text": "Abgaben\n\nQuarto Dokument sowie PDF oder HTML Dokument\nGut kommentiert\nRechtzeitig über Moodle!"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#was-ist-quarto",
+    "href": "slides_quarto/02b_gender_data_science.html#was-ist-quarto",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Was ist Quarto?",
+    "text": "Was ist Quarto?\n\nist ein neues, quelloffenes, wissenschaftliches und technisches Publikationssystem\nDas Ziel von Quarto ist es, den Prozess der Erstellung und Zusammenarbeit an wissenschaftlichen und technischen Dokumenten deutlich zu verbessern"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#warum-quarto",
+    "href": "slides_quarto/02b_gender_data_science.html#warum-quarto",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Warum Quarto?",
+    "text": "Warum Quarto?\n\n\nCode und Ergbenisdokument in einem Zuge erstellen\nKein lästiges hin und herkopieren\nKonsistente Implementierung praktischer Funktionen für alle Ausgaben: Tabsets, Code-Folding, Syntax-Highlighting, etc.\nZugänglichere Standardeinstellungen\nVisual editor\nLeitplanken, besonders hilfreich für neue Lernende: YAML-Vervollständigung, informative Syntaxfehler, etc."
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#warum-r",
+    "href": "slides_quarto/02b_gender_data_science.html#warum-r",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Warum R?",
+    "text": "Warum R?\n\nmehr statistische Modellierungsmöglichkeiten als Stata\nkostenlos und open source\nviel Unterstützungsmaterial online"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#hallo-welt",
+    "href": "slides_quarto/02b_gender_data_science.html#hallo-welt",
+    "title": "Gender Aspekte der Data Science",
+    "section": "“Hallo Welt!”",
+    "text": "“Hallo Welt!”\n\nprint(\"Hello World!\")"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#hallo-pinguine",
+    "href": "slides_quarto/02b_gender_data_science.html#hallo-pinguine",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Hallo Pinguine!",
+    "text": "Hallo Pinguine!\n\nArtwork by @allison_horst"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#pinguine-datensatz-inspizieren",
+    "href": "slides_quarto/02b_gender_data_science.html#pinguine-datensatz-inspizieren",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Pinguine Datensatz inspizieren",
+    "text": "Pinguine Datensatz inspizieren\n\nlibrary(palmerpenguins)\ndf = penguins\nhead(df)"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#pinguine-datensatz-inspizieren-1",
+    "href": "slides_quarto/02b_gender_data_science.html#pinguine-datensatz-inspizieren-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Pinguine Datensatz inspizieren",
+    "text": "Pinguine Datensatz inspizieren\n\nArtwork by @allison_horst"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#pinguine-übung",
+    "href": "slides_quarto/02b_gender_data_science.html#pinguine-übung",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Pinguine Übung",
+    "text": "Pinguine Übung\n\nWie viele Pinguine sind im Datensatz?\nWie viele Spezien?\n\n\n# Anzahl Pinguine im Datensatz\ncount(df)\n\n# Anzahl Pinguine pro Spezie\ndf %&gt;% \n  count(______)\n\n\nTipp: Suche die Variable, die die Spezie der Pinguine enthält\n\n\nSolution. \n\n\n\n\n\n\n\nSolution\n\n\nLösung:\n# Anzahl Pinguine im Datensatz\ncount(df)\n\n# Anzahl Pinguine pro Spezie\ndf %&gt;% \n  count(species)"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#yaml",
+    "href": "slides_quarto/02b_gender_data_science.html#yaml",
+    "title": "Gender Aspekte der Data Science",
+    "section": "YAML",
+    "text": "YAML\nDokument metadata\n\n\ntitle: \"Hello, Penguins!\"\nformat: html\neditor: visual"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#yaml-ausführlicher",
+    "href": "slides_quarto/02b_gender_data_science.html#yaml-ausführlicher",
+    "title": "Gender Aspekte der Data Science",
+    "section": "YAML ausführlicher",
+    "text": "YAML ausführlicher\nDokument metadata\n\n\nformat:\n  live-revealjs:\n    theme: default\n    slideNumber: true\ntitle: \"1. Übung\"\nsubtitle: \"Fortgeschrittene quantitative Methoden &lt;br&gt; Wintersemester 2024-2025\"\nauthor: \"Daria Tisch\"\neditor: visual"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#text",
+    "href": "slides_quarto/02b_gender_data_science.html#text",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Text",
+    "text": "Text\nMarkdown kann mit jedem Editor bearbeitet werden, auch mit den Quelltext- oder visuellen Editoren von RStudio."
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#code-1",
+    "href": "slides_quarto/02b_gender_data_science.html#code-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Code",
+    "text": "Code\nCode kann auch mit den Quelltext- oder visuellen Editoren von RStudio bearbeitet werden"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#quarto-output-dokumente",
+    "href": "slides_quarto/02b_gender_data_science.html#quarto-output-dokumente",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Quarto Output Dokumente",
+    "text": "Quarto Output Dokumente\n\nFolien / Präsentation (HTML, PDF, PowerPoint)\nManuskripte (Word Dokument, PDF, HTML)\nWebsites (HTML)"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#datenvisualisierung-2",
+    "href": "slides_quarto/02b_gender_data_science.html#datenvisualisierung-2",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenvisualisierung",
+    "text": "Datenvisualisierung"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#code",
+    "href": "slides_quarto/02b_gender_data_science.html#code",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Code",
+    "text": "Code\nCode kann auch mit den Quelltext- oder visuellen Editoren von RStudio bearbeitet werden"
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#forschungsfrage-für-diese-sitzung",
+    "href": "slides_quarto/02b_gender_data_science.html#forschungsfrage-für-diese-sitzung",
+    "title": "Gender Aspekte der Data Science",
+    "section": "🔎 Forschungsfrage für diese Sitzung",
+    "text": "🔎 Forschungsfrage für diese Sitzung\nWie groß ist der Gender Gap bei deutschen Menschen auf Wikidata?\nZiel: Wir untersuchen einen Gender Data Gap in einer der größten freien Wissensdatenbanken der Welt, Wikidata."
+  },
+  {
+    "objectID": "slides_quarto/02b_gender_data_science.html#organisation-ist-alles---ordnerstruktur",
+    "href": "slides_quarto/02b_gender_data_science.html#organisation-ist-alles---ordnerstruktur",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Organisation ist alles - Ordnerstruktur",
+    "text": "Organisation ist alles - Ordnerstruktur\n\n\n\n\n\n\n\ndata/: Trennung von raw und processed data\nR/: Falls R Skripte\nquarto/: Modularisierte Arbeit (01_intro, 02_methods, etc.).\noutput/: Ergebnisse, Visualisierungen"
   }
 ]
