@@ -15,7 +15,7 @@ execute:
 
 
 
-# Forschungs-datenmanagement {.smaller}
+# Forschungsdatenmanagement {.smaller}
 
 ## Was ist Forschungsdatenmanagement? {.smaller}
 
