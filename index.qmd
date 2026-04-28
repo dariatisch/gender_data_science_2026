@@ -25,6 +25,8 @@ Hier findet Ihr alle Unterlagen zum Download bzw. Anschauen:
 * [Übungsfolien (Quarto)](slides_quarto/02b_gender_data_science.html)
 
 ### Sitzung 3: Datenfeminismus
+* [Vorlesungsfolien (PDF)](slides_pdf/03a_gender_data_science.pdf)
+* [Übungsfolien (Quarto)](slides_quarto/03b_gender_data_science.html)
 
 ### Sitzung 4: Gender Bias im gesamten Datenprozess
 

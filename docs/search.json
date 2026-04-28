@@ -11,7 +11,7 @@
     "href": "index.html#kursmaterialien",
     "title": "Willkommen zum Kurs: Gender Aspekte der Data Science",
     "section": "Kursmaterialien",
-    "text": "Kursmaterialien\nHier findet Ihr alle Unterlagen zum Download bzw. Anschauen:\n\nSyllabus: Gender-Aspekte der Data Science\n\nSyllabus (PDF)\n\n\n\nSitzung 1: Einführung\n\nVorlesungsfolien (PDF)\nVorlesungsfolien mit Notizen (PDF)\nÜbungsfolien (PDF)\n\n\n\nSitzung 2: Der männliche Prototyp\n\nVorlesungsfolien (PDF)\nInfos zum Teamprojekt (PDF)\nÜbungsfolien (Quarto)\n\n\n\nSitzung 3: Datenfeminismus\n\n\nSitzung 4: Gender Bias im gesamten Datenprozess\n\n\nSitzung 5: Thematische Vertiefung – Gender Bias im Gesundheitsbereich\n\n\nSitzung 6: Online-Fragestunde & Projektunterstützung\n\n\nSitzung 7: Thematische Vertiefung – Algorithmische Diskriminierung\n\n\nSitzung 8: Projektpräsentationen & Reflexion"
+    "text": "Kursmaterialien\nHier findet Ihr alle Unterlagen zum Download bzw. Anschauen:\n\nSyllabus: Gender-Aspekte der Data Science\n\nSyllabus (PDF)\n\n\n\nSitzung 1: Einführung\n\nVorlesungsfolien (PDF)\nVorlesungsfolien mit Notizen (PDF)\nÜbungsfolien (PDF)\n\n\n\nSitzung 2: Der männliche Prototyp\n\nVorlesungsfolien (PDF)\nInfos zum Teamprojekt (PDF)\nÜbungsfolien (Quarto)\n\n\n\nSitzung 3: Datenfeminismus\n\nVorlesungsfolien (PDF)\nÜbungsfolien (Quarto)\n\n\n\nSitzung 4: Gender Bias im gesamten Datenprozess\n\n\nSitzung 5: Thematische Vertiefung – Gender Bias im Gesundheitsbereich\n\n\nSitzung 6: Online-Fragestunde & Projektunterstützung\n\n\nSitzung 7: Thematische Vertiefung – Algorithmische Diskriminierung\n\n\nSitzung 8: Projektpräsentationen & Reflexion"
   },
   {
     "objectID": "slides_quarto/02b_gender_data_science.html#forschungsziel-heute",
@@ -390,5 +390,250 @@
     "title": "Gender Aspekte der Data Science",
     "section": "Organisation ist alles - Ordnerstruktur",
     "text": "Organisation ist alles - Ordnerstruktur\n\n\n\n\n\n\n\ndata/: Trennung von raw und processed data\nR/: Falls R Skripte\nquarto/: Modularisierte Arbeit (01_intro, 02_methods, etc.).\noutput/: Ergebnisse, Visualisierungen"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#forschungsfrage-für-diese-sitzung",
+    "href": "slides_quarto/03b_gender_data_science.html#forschungsfrage-für-diese-sitzung",
+    "title": "Gender Aspekte der Data Science",
+    "section": "🔎 Forschungsfrage für diese Sitzung",
+    "text": "🔎 Forschungsfrage für diese Sitzung\nUnterscheidet sich die Länge von Wikipedia-Artikeln deutscher Politikerinnen vs. Politiker?\nSample: Politikerinnen und Politiker des 21. Bundestages"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#werkzeuge",
+    "href": "slides_quarto/03b_gender_data_science.html#werkzeuge",
+    "title": "Gender Aspekte der Data Science",
+    "section": "🛠️ Werkzeuge",
+    "text": "🛠️ Werkzeuge\nFür die Analyse mit R nutzen wir zwei Hauptzugänge:\n\nWikidata (SPARQL): Für strukturierte Daten (Infos zu Abgeordneten des 21. Bundestages). Paket: WikidataR.\nWikipedia (API): Für unstrukturierte Textdaten (Artikellänge, Edits). Paket: WikipediR"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#wikidata-strukturierte-daten",
+    "href": "slides_quarto/03b_gender_data_science.html#wikidata-strukturierte-daten",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Wikidata: Strukturierte Daten",
+    "text": "Wikidata: Strukturierte Daten\nWikidata speichert Informationen in Triplen (Subjekt - Prädikat - Objekt). Um diese abzufragen, nutzen wir SPARQL.\nWichtige IDs:\n\nP39: öffentliches Amt oder Stellung\nQ1939555: Mitglied des Deutschen Bundestages\nP2937: Wahlperiode\nQ124661964: 21. Deutscher Bundestag"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#wikidata-page-caroline-criado-perez",
+    "href": "slides_quarto/03b_gender_data_science.html#wikidata-page-caroline-criado-perez",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Wikidata Page: Caroline Criado-Perez",
+    "text": "Wikidata Page: Caroline Criado-Perez\n\n\nCaroline Criado-Perez"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#queries",
+    "href": "slides_quarto/03b_gender_data_science.html#queries",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Queries",
+    "text": "Queries\n\n\nWikidata Query Service"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#query-welchen-beruf-hat-caroline",
+    "href": "slides_quarto/03b_gender_data_science.html#query-welchen-beruf-hat-caroline",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Query: Welchen Beruf hat Caroline?",
+    "text": "Query: Welchen Beruf hat Caroline?\n\n\nLink to query"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#query-welche-staatsbürgerschaft-hat-caroline-und-wo-wurde-sie-geboren",
+    "href": "slides_quarto/03b_gender_data_science.html#query-welche-staatsbürgerschaft-hat-caroline-und-wo-wurde-sie-geboren",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Query: Welche Staatsbürgerschaft hat Caroline und wo wurde sie geboren?",
+    "text": "Query: Welche Staatsbürgerschaft hat Caroline und wo wurde sie geboren?\n\n\nLink to query"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#query-gender-gap-bei-deutschen-auf-wikidata",
+    "href": "slides_quarto/03b_gender_data_science.html#query-gender-gap-bei-deutschen-auf-wikidata",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Query: Gender Gap bei Deutschen auf Wikidata",
+    "text": "Query: Gender Gap bei Deutschen auf Wikidata\n\n\nLink to query"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#setup",
+    "href": "slides_quarto/03b_gender_data_science.html#setup",
+    "title": "Gender Aspekte der Data Science",
+    "section": "📦 Setup",
+    "text": "📦 Setup\n\nlibrary(WikidataR)\nlibrary(WikipediR)\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\nlibrary(stringr)\nlibrary(purrr)\nlibrary(httr)\nlibrary(jsonlite)"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#gender-gap-query-in-r",
+    "href": "slides_quarto/03b_gender_data_science.html#gender-gap-query-in-r",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Gender Gap Query in R",
+    "text": "Gender Gap Query in R\n\nsparql_query = '\nSELECT ?genderLabel ?count\nWHERE {\n  {\n    SELECT ?gender (COUNT(?person) AS ?count) WHERE {\n      ?person wdt:P31 wd:Q5 .\n      ?person wdt:P27 wd:Q183 .\n      ?person wdt:P21 ?gender .\n    }\n    GROUP BY ?gender\n  }\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\nORDER BY DESC(?count)\n'"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#anfrage-an-wikidata-api",
+    "href": "slides_quarto/03b_gender_data_science.html#anfrage-an-wikidata-api",
+    "title": "Gender Aspekte der Data Science",
+    "section": "🚀 Anfrage an Wikidata API",
+    "text": "🚀 Anfrage an Wikidata API\n\ndf_raw = query_wikidata(sparql_query, format = c(\"tibble\"))\ndf_raw\n\n# A tibble: 634 × 5\n   person     personLabel       gender   genderLabel article          \n   &lt;chr&gt;      &lt;chr&gt;             &lt;chr&gt;    &lt;chr&gt;       &lt;chr&gt;            \n 1 Q132733585 Q132733585        Q6581097 männlich    Raimond_Scheirich\n 2 Q132733606 Aaron Valent      Q6581097 männlich    Aaron_Valent     \n 3 Q132733543 Achim Köhler      Q6581097 männlich    Achim_K%C3%B6hler\n 4 Q132733484 Adam Balten       Q6581097 männlich    Adam_Balten      \n 5 Q96096131  Adis Ahmetovic    Q6581097 männlich    Adis_Ahmetovic   \n 6 Q27065428  Adrian Grasse     Q6581097 männlich    Adrian_Grasse    \n 7 Q132733506 Agnes Conrad      Q6581072 weiblich    Agnes_Conrad     \n 8 Q109309    Agnieszka Brugger Q6581072 weiblich    Agnieszka_Brugger\n 9 Q122308264 Alaa Alhamwi      Q6581097 männlich    Alaa_Alhamwi     \n10 Q1738272   Albert Rupprecht  Q6581097 männlich    Albert_Rupprecht \n# ℹ 624 more rows"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenaufbereitung",
+    "href": "slides_quarto/03b_gender_data_science.html#datenaufbereitung",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenaufbereitung",
+    "text": "Datenaufbereitung\n\nnames(df_raw)\n\n[1] \"person\"      \"personLabel\" \"gender\"      \"genderLabel\" \"article\"    \n\ndf = df_raw %&gt;%\n  mutate(female = ifelse(genderLabel == \"weiblich\", 1, \n                         ifelse(genderLabel == \"männlich\", 0, 99)))\n  \ntable(df$female)\n\n\n  0   1  99 \n427 206   1"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenvisualisierung",
+    "href": "slides_quarto/03b_gender_data_science.html#datenvisualisierung",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenvisualisierung",
+    "text": "Datenvisualisierung\n\nplot_wikidata = ggplot(df, aes(x = reorder(gender, count), y = count, fill = gender)) +\n  geom_col(width = 0.7, show.legend = FALSE) +\n  coord_flip() +\n  \n  # Farbpalette\n  scale_fill_brewer(palette = \"Set2\") +\n  \n  # Labels\n  labs(\n    title = \"Geschlechterverteilung deutscher Personen in Wikidata\",\n    subtitle = \"Datenquelle: Wikidata Query Service\",\n    x = \"Geschlecht\",\n    y = \"Anzahl\"\n  ) +\n  \n  # Minimaler, moderner Theme-Stil\n  theme_minimal(base_size = 14) +\n  \n  theme(\n    plot.title = element_text(face = \"bold\", size = 18),\n    plot.subtitle = element_text(size = 12, color = \"gray40\"),\n    axis.title = element_text(face = \"bold\"),\n    panel.grid.major.y = element_blank(),\n    panel.grid.minor = element_blank(),\n    plot.margin = margin(10, 15, 10, 15)\n  )"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenvisualisierung-1",
+    "href": "slides_quarto/03b_gender_data_science.html#datenvisualisierung-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenvisualisierung",
+    "text": "Datenvisualisierung"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#gender-data-gap",
+    "href": "slides_quarto/03b_gender_data_science.html#gender-data-gap",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Gender Data Gap",
+    "text": "Gender Data Gap\n\ndf_gap = df  %&gt;%\n  select(-genderLabel) %&gt;%\n  pivot_wider(names_from = gender, values_from = count) %&gt;%\n  rename(male = männlich,\n         female =weiblich) %&gt;%\n  mutate(\n    absolute_gap = male - female,\n    ratio_male_female = male / female,\n    female_share = female / (male + female)\n  )\n\ndf_gap\n\n# A tibble: 1 × 5\n    male female absolute_gap ratio_male_female female_share\n   &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;             &lt;dbl&gt;        &lt;dbl&gt;\n1 246716  78817       167899              3.13        0.242"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#zweite-forschungsfrage",
+    "href": "slides_quarto/03b_gender_data_science.html#zweite-forschungsfrage",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Zweite Forschungsfrage",
+    "text": "Zweite Forschungsfrage\nUnterscheidet sich die Länge von Wikipedia-Artikeln deutscher Politikerinnen vs. Politiker?\nStichprobe Alle Abgeordnete des 21. Deutschen Bundestag\nVorgehen\n\nÜber Wikidata alle Abgeordnete finden\nArtikel Länge der deutschen Wikipedia Einträge finden\nAnalyse"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#query-artikel-abgeordnete-21.-deutscher-bundestag",
+    "href": "slides_quarto/03b_gender_data_science.html#query-artikel-abgeordnete-21.-deutscher-bundestag",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Query: Artikel Abgeordnete 21. Deutscher Bundestag",
+    "text": "Query: Artikel Abgeordnete 21. Deutscher Bundestag\n\n\nLink to query"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#abgeordnete-query-in-r",
+    "href": "slides_quarto/03b_gender_data_science.html#abgeordnete-query-in-r",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Abgeordnete Query in R",
+    "text": "Abgeordnete Query in R\n\nsparql_query_abg = '\nSELECT DISTINCT ?person ?personLabel ?gender ?article WHERE {\n  ?person p:P39 ?positionStatement .\n  \n  ?positionStatement ps:P39 wd:Q1939555 .   # Mitglied des Deutschen Bundestages\n  \n  ?positionStatement pq:P2937 wd:Q124661964 . # 21. Deutscher Bundestag (Q-ID einsetzen)\n  \n  ?person wdt:P21 ?gender.\n  \n  ?article schema:about ?person;\n           schema:isPartOf &lt;https://de.wikipedia.org/&gt;.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\nORDER BY ?personLabel\n'"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#anfrage-an-wikidata-api-1",
+    "href": "slides_quarto/03b_gender_data_science.html#anfrage-an-wikidata-api-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "🚀 Anfrage an Wikidata API",
+    "text": "🚀 Anfrage an Wikidata API\n\ndf_abg_raw = query_wikidata(sparql_query_abg, format = c(\"tibble\"))"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenaufbereitung-1",
+    "href": "slides_quarto/03b_gender_data_science.html#datenaufbereitung-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenaufbereitung",
+    "text": "Datenaufbereitung\n\nurls &lt;- df$article\n\nget_title &lt;- function(url) {\n  url |&gt; \n    str_remove(\"https?://de.wikipedia.org/wiki/\") |&gt; \n    URLdecode()\n}\n\ntitles &lt;- map_chr(urls, get_title)"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#the-end",
+    "href": "slides_quarto/03b_gender_data_science.html#the-end",
+    "title": "Gender Aspekte der Data Science",
+    "section": "The end",
+    "text": "The end"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#wikidata-page-rebecca-lenhard",
+    "href": "slides_quarto/03b_gender_data_science.html#wikidata-page-rebecca-lenhard",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Wikidata Page: Rebecca Lenhard",
+    "text": "Wikidata Page: Rebecca Lenhard\n\n\nRebecca Lenhard"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#query-welchen-beruf-hat-rebecca",
+    "href": "slides_quarto/03b_gender_data_science.html#query-welchen-beruf-hat-rebecca",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Query: Welchen Beruf hat Rebecca?",
+    "text": "Query: Welchen Beruf hat Rebecca?\n\n\nLink to query"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#query-abgeordnete-des-21.-deutschen-bundestages",
+    "href": "slides_quarto/03b_gender_data_science.html#query-abgeordnete-des-21.-deutschen-bundestages",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Query: Abgeordnete des 21. Deutschen Bundestages",
+    "text": "Query: Abgeordnete des 21. Deutschen Bundestages\n\n\nLink to query"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#forschungsfrage",
+    "href": "slides_quarto/03b_gender_data_science.html#forschungsfrage",
+    "title": "Gender Aspekte der Data Science",
+    "section": "🔎 Forschungsfrage",
+    "text": "🔎 Forschungsfrage\nUnterscheidet sich die Länge von Wikipedia-Artikeln deutscher Politikerinnen vs. Politiker?\nVorgehen:\n\nÜber Wikidata alle Abgeordnete finden\nArtikel Länge der deutschen Wikipedia Einträge finden\nAnalyse"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#abgeordneten-query-in-r",
+    "href": "slides_quarto/03b_gender_data_science.html#abgeordneten-query-in-r",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Abgeordneten Query in R",
+    "text": "Abgeordneten Query in R\n\nsparql_query = '\nSELECT DISTINCT ?person ?personLabel ?gender ?genderLabel ?article WHERE {\n  ?person p:P39 ?positionStatement .\n  \n  ?positionStatement ps:P39 wd:Q1939555 .   # Mitglied des Deutschen Bundestages\n  \n  ?positionStatement pq:P2937 wd:Q124661964 . # 21. Deutscher Bundestag (Q-ID einsetzen)\n  \n  ?person wdt:P21 ?gender.\n  \n  ?article schema:about ?person;\n           schema:isPartOf &lt;https://de.wikipedia.org/&gt;.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"de,en\". }\n}\nORDER BY ?personLabel\n'"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#wikipedia-seitenlänge-extrahieren",
+    "href": "slides_quarto/03b_gender_data_science.html#wikipedia-seitenlänge-extrahieren",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Wikipedia Seitenlänge extrahieren",
+    "text": "Wikipedia Seitenlänge extrahieren\n\n# Hilfsfunktion, um die Seitengröße zu extrahieren\nget_wiki_size &lt;- function(title) {\n  # Wir fragen die Info für die deutsche Wikipedia ab\n  info &lt;- page_info(\"de\", \"wikipedia\", page = title, clean_response = TRUE)\n  \n  # Extrahiere die Länge in Bytes (standardmäßig im Feld 'length' enthalten)\n  if (!is.null(info[[1]]$length)) {\n    return(info[[1]]$length)\n  } else {\n    return(NA)\n  }\n}\n\n# Anwendung auf die Liste von Titeln\ndf &lt;- df %&gt;%\n  mutate(article_length = map_dbl(titles, get_wiki_size))"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#wikipedia-backlinks-extrahieren",
+    "href": "slides_quarto/03b_gender_data_science.html#wikipedia-backlinks-extrahieren",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Wikipedia Backlinks extrahieren",
+    "text": "Wikipedia Backlinks extrahieren\n\nget_backlinks &lt;- function(title) {\n  backl &lt;- page_backlinks(\"de\", \"wikipedia\", page = title, limit = 500)\n  \n  # Extract backlink count\n  if (!is.null(backl$query$backlinks)) {\n    return(length(backl$query$backlinks))\n  } else {\n    warning(\"No backlinks found or page does not exist.\")\n    return(0)\n  }\n}\n# Anwendung auf die Liste von Titeln\ndf &lt;- df %&gt;%\n  mutate(article_backl = map_dbl(titles, get_backlinks))"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenanalyse-durchschnittswerte",
+    "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-durchschnittswerte",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenanalyse: Durchschnittswerte",
+    "text": "Datenanalyse: Durchschnittswerte\n\nplot_data &lt;- df %&gt;%\n  filter(female %in% c(0, 1)) %&gt;% # Nur männlich (0) und weiblich (1)\n  mutate(Geschlecht = ifelse(female == 1, \"Weiblich\", \"Männlich\")) %&gt;%\n  group_by(Geschlecht) %&gt;%\n  summarise(\n    avg_length = mean(article_length, na.rm = TRUE),\n    sd_length = sd(article_length, na.rm = TRUE),\n    avg_backl = mean(article_backl, na.rm = TRUE),\n    sd_backl = sd(article_backl, na.rm = TRUE),\n    avg_views = mean(total_views, na.rm = TRUE),\n    n = n()\n  )\n\nplot_data\n\n# A tibble: 2 × 7\n  Geschlecht avg_length sd_length avg_backl sd_backl avg_views     n\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;\n1 Männlich       13362.    19129.      57.3     83.9    31135.   427\n2 Weiblich       13241.    15281.      63.8     81.8    40047.   206"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-artikellänge",
+    "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-artikellänge",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenanalyse: t-Test Artikellänge",
+    "text": "Datenanalyse: t-Test Artikellänge\n\ndf = df %&gt;%\n  filter(female &lt;2)\nt_test_result &lt;- t.test(article_length ~ female, data = df)\nt_test_result\n\n\n    Welch Two Sample t-test\n\ndata:  article_length by female\nt = 0.085348, df = 495.78, p-value = 0.932\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -2651.580  2892.407\nsample estimates:\nmean in group 0 mean in group 1 \n       13361.57        13241.16"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#visualisierung-artikellänge",
+    "href": "slides_quarto/03b_gender_data_science.html#visualisierung-artikellänge",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Visualisierung: Artikellänge",
+    "text": "Visualisierung: Artikellänge\n\nggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +\n  geom_bar(stat = \"identity\", width = 0.6, show.legend = FALSE) +\n  scale_fill_manual(values = c(\"Männlich\" = \"#3498db\", \"Weiblich\" = \"#e67e22\")) +\n  # Beschriftungen\n  labs(\n    title = \"Durchschnittliche Wikipedia-Artikellänge nach Geschlecht\",\n    subtitle = \"Abgeordnete des 21. Deutschen Bundestages\",\n    x = \"Geschlecht\",\n    y = \"Durchschnittliche Länge (Bytes)\",\n    caption = paste(\"Quelle: Wikidata & Wikipedia API | n =\", sum(plot_data$n))\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.major.x = element_blank()\n  )"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-backlinks",
+    "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-backlinks",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenanalyse: t-Test Backlinks",
+    "text": "Datenanalyse: t-Test Backlinks\n\ndf = df %&gt;%\n  filter(female &lt;2)\nt_test_result2 &lt;- t.test(article_backl ~ female, data = df)\nt_test_result2\n\n\n    Welch Two Sample t-test\n\ndata:  article_backl by female\nt = -0.92917, df = 414.56, p-value = 0.3533\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -20.267282   7.256868\nsample estimates:\nmean in group 0 mean in group 1 \n       57.27635        63.78155"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#visualisierung-backlinks",
+    "href": "slides_quarto/03b_gender_data_science.html#visualisierung-backlinks",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Visualisierung: Backlinks",
+    "text": "Visualisierung: Backlinks\n\nggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +\n  geom_bar(stat = \"identity\", width = 0.6, show.legend = FALSE) +\n  scale_fill_manual(values = c(\"Männlich\" = \"#3498db\", \"Weiblich\" = \"#e67e22\")) +\n  # Beschriftungen\n  labs(\n    title = \"Durchschnittliche Wikipedia-Backlinks nach Geschlecht\",\n    subtitle = \"Abgeordnete des 21. Deutschen Bundestages\",\n    x = \"Geschlecht\",\n    y = \"Durchschnittliche Backlinks (Anzahl)\",\n    caption = paste(\"Quelle: Wikidata & Wikipedia API | n =\", sum(plot_data$n))\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.major.x = element_blank()\n  )\n\ntable(df$genderLabel)\n\n\nmännlich weiblich \n     427      206"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#wikipedia-pageviews-extrahieren",
+    "href": "slides_quarto/03b_gender_data_science.html#wikipedia-pageviews-extrahieren",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Wikipedia Pageviews extrahieren",
+    "text": "Wikipedia Pageviews extrahieren\n\nget_wiki_views_direct &lt;- function(title) {\n  # Wir müssen Leerzeichen in Titeln für die URL mit %20 kodieren\n  safe_title &lt;- URLencode(title, reserved = TRUE)\n  \n  # Die URL der Wikimedia API für Pageviews (kumuliert für 2025)\n  # Struktur: project/access/agent/article/granularity/start/end\n  url &lt;- paste0(\n    \"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/de.wikipedia/all-access/user/\",\n    safe_title,\n    \"/monthly/2025042700/2026042700\"\n  )\n  \n  res &lt;- GET(url, add_headers(`User-Agent` = \"Daria Tisch, TH Nuernberg\"))\n  \n  if (status_code(res) == 200) {\n    data &lt;- fromJSON(content(res, as = \"text\", encoding = \"UTF-8\"))\n    return(sum(data$items$views))\n  } else {\n    return(NA) # Falls die API die Seite nicht findet\n  }\n}\n\n# Anwendung auf deine Titel\ndf &lt;- df %&gt;%\n  mutate(total_views = map_dbl(titles, function(x) {\n    Sys.sleep(0.001) # Kurze Pause zur Schonung der API\n    get_wiki_views_direct(x)\n  }))"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-pageviews",
+    "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-pageviews",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Datenanalyse: t-Test Pageviews",
+    "text": "Datenanalyse: t-Test Pageviews\n\nt_test_result3 &lt;- t.test(total_views ~ female, data = df)\nt_test_result3\n\n\n    Welch Two Sample t-test\n\ndata:  total_views by female\nt = -0.36692, df = 10.879, p-value = 0.7207\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -62439.35  44616.62\nsample estimates:\nmean in group 0 mean in group 1 \n       31135.44        40046.80"
   }
 ]

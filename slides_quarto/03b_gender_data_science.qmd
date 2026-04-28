@@ -1,0 +1,359 @@
+---
+title: "Gender Aspekte der Data Science"
+subtitle: "Sitzung 3b: Arbeiten mit Wikipedia API | Arbeit an Team-Projekten"
+author: "Daria Tisch"
+format: 
+  revealjs:
+    theme: solarized
+    transition: slide
+    scrollable: true
+    code-line-numbers: true
+execute:
+  echo: true
+  warning: false
+---
+
+
+
+--- 
+
+## 🔎 Forschungsfrage für diese Sitzung
+
+Unterscheidet sich die Länge von Wikipedia-Artikeln deutscher Politikerinnen vs. Politiker?
+
+Sample: Politikerinnen und Politiker des 21. Bundestages
+
+
+---
+
+## 🔎 Forschungsfrage
+
+Unterscheidet sich die Länge von Wikipedia-Artikeln deutscher Politikerinnen vs. Politiker?
+
+Vorgehen:
+
+1. Über Wikidata alle Abgeordnete finden
+2. Artikel Länge der deutschen Wikipedia Einträge finden
+3. Analyse
+
+---
+
+## 🛠️ Werkzeuge
+
+Für die Analyse mit **R** nutzen wir zwei Hauptzugänge:
+
+1.  **Wikidata (SPARQL):** Für strukturierte Daten (Infos zu Abgeordneten des 21. Bundestages). Paket: `WikidataR`.
+2.  **Wikipedia (API):** Für unstrukturierte Textdaten (Artikellänge, Edits). Paket: `WikipediR`
+
+---
+
+## Wikidata: Strukturierte Daten
+
+Wikidata speichert Informationen in **Triplen** (Subjekt - Prädikat - Objekt). 
+Um diese abzufragen, nutzen wir **SPARQL**.
+
+### Wichtige IDs:
+* `P39`: öffentliches Amt oder Stellung
+* `Q1939555`: Mitglied des Deutschen Bundestages
+* `P2937`: Wahlperiode
+* `Q124661964`: 21. Deutscher Bundestag
+---
+
+## Wikidata Page: Rebecca Lenhard
+
+<iframe src="https://www.wikidata.org/wiki/Q132733625" width="100%" height="500px">
+
+</iframe>
+
+[Rebecca Lenhard](https://www.wikidata.org/wiki/Q132733625)
+
+
+
+---
+
+## Query: Welchen Beruf hat Rebecca?
+
+<iframe src="https://w.wiki/MLo$" width="100%" height="500px">
+
+</iframe>
+
+[Link to query](https://w.wiki/MLo$)
+
+
+---
+
+## Query: Abgeordnete des 21. Deutschen Bundestages
+
+<iframe src="https://w.wiki/LDS3" width="100%" height="500px">
+
+</iframe>
+
+[Link to query](https://w.wiki/LDS3)
+
+
+---
+
+## 📦 Setup
+
+```{r}
+library(WikidataR)
+library(WikipediR)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(stringr)
+library(purrr)
+library(httr)
+library(jsonlite)
+```
+
+
+--- 
+
+## Abgeordneten Query in R
+```{r}
+sparql_query = '
+SELECT DISTINCT ?person ?personLabel ?gender ?genderLabel ?article WHERE {
+  ?person p:P39 ?positionStatement .
+  
+  ?positionStatement ps:P39 wd:Q1939555 .   # Mitglied des Deutschen Bundestages
+  
+  ?positionStatement pq:P2937 wd:Q124661964 . # 21. Deutscher Bundestag (Q-ID einsetzen)
+  
+  ?person wdt:P21 ?gender.
+  
+  ?article schema:about ?person;
+           schema:isPartOf <https://de.wikipedia.org/>.
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "de,en". }
+}
+ORDER BY ?personLabel
+'
+```
+
+---
+
+## 🚀 Anfrage an Wikidata API
+```{r}
+df_raw = query_wikidata(sparql_query, format = c("tibble"))
+df_raw
+```
+
+--- 
+
+## Datenaufbereitung
+```{r}
+names(df_raw)
+df = df_raw %>%
+  mutate(female = ifelse(genderLabel == "weiblich", 1, 
+                         ifelse(genderLabel == "männlich", 0, 99)))
+  
+table(df$female)
+```
+
+
+---
+
+## Datenaufbereitung
+
+```{r}
+urls <- df$article
+
+get_title <- function(url) {
+  url |> 
+    str_remove("https?://de.wikipedia.org/wiki/") |> 
+    URLdecode()
+}
+
+titles <- map_chr(urls, get_title)
+```
+
+---
+
+## Wikipedia Seitenlänge extrahieren
+
+```{r}
+
+# Hilfsfunktion, um die Seitengröße zu extrahieren
+get_wiki_size <- function(title) {
+  # Wir fragen die Info für die deutsche Wikipedia ab
+  info <- page_info("de", "wikipedia", page = title, clean_response = TRUE)
+  
+  # Extrahiere die Länge in Bytes (standardmäßig im Feld 'length' enthalten)
+  if (!is.null(info[[1]]$length)) {
+    return(info[[1]]$length)
+  } else {
+    return(NA)
+  }
+}
+
+# Anwendung auf die Liste von Titeln
+df <- df %>%
+  mutate(article_length = map_dbl(titles, get_wiki_size))
+
+```
+---
+
+## Wikipedia Backlinks extrahieren
+
+```{r}
+
+get_backlinks <- function(title) {
+  backl <- page_backlinks("de", "wikipedia", page = title, limit = 500)
+  
+  # Extract backlink count
+  if (!is.null(backl$query$backlinks)) {
+    return(length(backl$query$backlinks))
+  } else {
+    warning("No backlinks found or page does not exist.")
+    return(0)
+  }
+}
+# Anwendung auf die Liste von Titeln
+df <- df %>%
+  mutate(article_backl = map_dbl(titles, get_backlinks))
+
+```
+
+
+
+---
+
+
+## Wikipedia Pageviews extrahieren 
+
+```{r}
+get_wiki_views_direct <- function(title) {
+  # Wir müssen Leerzeichen in Titeln für die URL mit %20 kodieren
+  safe_title <- URLencode(title, reserved = TRUE)
+  
+  # Die URL der Wikimedia API für Pageviews (kumuliert für 2025)
+  # Struktur: project/access/agent/article/granularity/start/end
+  url <- paste0(
+    "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/de.wikipedia/all-access/user/",
+    safe_title,
+    "/monthly/2025042700/2026042700"
+  )
+  
+  res <- GET(url, add_headers(`User-Agent` = "Daria Tisch, TH Nuernberg"))
+  
+  if (status_code(res) == 200) {
+    data <- fromJSON(content(res, as = "text", encoding = "UTF-8"))
+    return(sum(data$items$views))
+  } else {
+    return(NA) # Falls die API die Seite nicht findet
+  }
+}
+
+# Anwendung auf deine Titel
+df <- df %>%
+  mutate(total_views = map_dbl(titles, function(x) {
+    Sys.sleep(0.001) # Kurze Pause zur Schonung der API
+    get_wiki_views_direct(x)
+  }))
+
+
+```
+---
+
+## Datenanalyse: Durchschnittswerte
+
+```{r}
+plot_data <- df %>%
+  filter(female %in% c(0, 1)) %>% # Nur männlich (0) und weiblich (1)
+  mutate(Geschlecht = ifelse(female == 1, "Weiblich", "Männlich")) %>%
+  group_by(Geschlecht) %>%
+  summarise(
+    avg_length = mean(article_length, na.rm = TRUE),
+    sd_length = sd(article_length, na.rm = TRUE),
+    avg_backl = mean(article_backl, na.rm = TRUE),
+    sd_backl = sd(article_backl, na.rm = TRUE),
+    avg_views = mean(total_views, na.rm = TRUE),
+    n = n()
+  )
+
+plot_data
+```
+
+---
+
+## Datenanalyse: t-Test Artikellänge
+
+```{r}
+df = df %>%
+  filter(female <2)
+t_test_result <- t.test(article_length ~ female, data = df)
+t_test_result
+```
+---
+
+## Visualisierung: Artikellänge
+
+```{r}
+ggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +
+  geom_bar(stat = "identity", width = 0.6, show.legend = FALSE) +
+  scale_fill_manual(values = c("Männlich" = "#3498db", "Weiblich" = "#e67e22")) +
+  # Beschriftungen
+  labs(
+    title = "Durchschnittliche Wikipedia-Artikellänge nach Geschlecht",
+    subtitle = "Abgeordnete des 21. Deutschen Bundestages",
+    x = "Geschlecht",
+    y = "Durchschnittliche Länge (Bytes)",
+    caption = paste("Quelle: Wikidata & Wikipedia API | n =", sum(plot_data$n))
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+```
+---
+
+
+## Datenanalyse: t-Test Backlinks
+
+```{r}
+df = df %>%
+  filter(female <2)
+t_test_result2 <- t.test(article_backl ~ female, data = df)
+t_test_result2
+```
+
+
+---
+## Visualisierung: Backlinks
+
+```{r}
+ggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +
+  geom_bar(stat = "identity", width = 0.6, show.legend = FALSE) +
+  scale_fill_manual(values = c("Männlich" = "#3498db", "Weiblich" = "#e67e22")) +
+  # Beschriftungen
+  labs(
+    title = "Durchschnittliche Wikipedia-Backlinks nach Geschlecht",
+    subtitle = "Abgeordnete des 21. Deutschen Bundestages",
+    x = "Geschlecht",
+    y = "Durchschnittliche Backlinks (Anzahl)",
+    caption = paste("Quelle: Wikidata & Wikipedia API | n =", sum(plot_data$n))
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold"),
+    panel.grid.major.x = element_blank()
+  )
+
+
+table(df$genderLabel)
+```
+---
+
+## Datenanalyse: t-Test Pageviews
+
+```{r}
+
+t_test_result3 <- t.test(total_views ~ female, data = df)
+t_test_result3
+```
+
+
+---
+## The end
+
