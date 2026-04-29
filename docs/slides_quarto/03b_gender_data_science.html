@@ -388,179 +388,125 @@ Daria Tisch
 <span id="cb11-14"><a></a>  <span class="fu">mutate</span>(<span class="at">article_backl =</span> <span class="fu">map_dbl</span>(titles, get_backlinks))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="wikipedia-pageviews-extrahieren" class="slide level2">
-<h2>Wikipedia Pageviews extrahieren</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>get_wiki_views_direct <span class="ot">&lt;-</span> <span class="cf">function</span>(title) {</span>
-<span id="cb12-2"><a></a>  <span class="co"># Wir müssen Leerzeichen in Titeln für die URL mit %20 kodieren</span></span>
-<span id="cb12-3"><a></a>  safe_title <span class="ot">&lt;-</span> <span class="fu">URLencode</span>(title, <span class="at">reserved =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb12-4"><a></a>  </span>
-<span id="cb12-5"><a></a>  <span class="co"># Die URL der Wikimedia API für Pageviews (kumuliert für 2025)</span></span>
-<span id="cb12-6"><a></a>  <span class="co"># Struktur: project/access/agent/article/granularity/start/end</span></span>
-<span id="cb12-7"><a></a>  url <span class="ot">&lt;-</span> <span class="fu">paste0</span>(</span>
-<span id="cb12-8"><a></a>    <span class="st">"https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/de.wikipedia/all-access/user/"</span>,</span>
-<span id="cb12-9"><a></a>    safe_title,</span>
-<span id="cb12-10"><a></a>    <span class="st">"/monthly/2025042700/2026042700"</span></span>
-<span id="cb12-11"><a></a>  )</span>
-<span id="cb12-12"><a></a>  </span>
-<span id="cb12-13"><a></a>  res <span class="ot">&lt;-</span> <span class="fu">GET</span>(url, <span class="fu">add_headers</span>(<span class="st">`</span><span class="at">User-Agent</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"Daria Tisch, TH Nuernberg"</span>))</span>
-<span id="cb12-14"><a></a>  </span>
-<span id="cb12-15"><a></a>  <span class="cf">if</span> (<span class="fu">status_code</span>(res) <span class="sc">==</span> <span class="dv">200</span>) {</span>
-<span id="cb12-16"><a></a>    data <span class="ot">&lt;-</span> <span class="fu">fromJSON</span>(<span class="fu">content</span>(res, <span class="at">as =</span> <span class="st">"text"</span>, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>))</span>
-<span id="cb12-17"><a></a>    <span class="fu">return</span>(<span class="fu">sum</span>(data<span class="sc">$</span>items<span class="sc">$</span>views))</span>
-<span id="cb12-18"><a></a>  } <span class="cf">else</span> {</span>
-<span id="cb12-19"><a></a>    <span class="fu">return</span>(<span class="cn">NA</span>) <span class="co"># Falls die API die Seite nicht findet</span></span>
-<span id="cb12-20"><a></a>  }</span>
-<span id="cb12-21"><a></a>}</span>
-<span id="cb12-22"><a></a></span>
-<span id="cb12-23"><a></a><span class="co"># Anwendung auf deine Titel</span></span>
-<span id="cb12-24"><a></a>df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb12-25"><a></a>  <span class="fu">mutate</span>(<span class="at">total_views =</span> <span class="fu">map_dbl</span>(titles, <span class="cf">function</span>(x) {</span>
-<span id="cb12-26"><a></a>    <span class="fu">Sys.sleep</span>(<span class="fl">0.001</span>) <span class="co"># Kurze Pause zur Schonung der API</span></span>
-<span id="cb12-27"><a></a>    <span class="fu">get_wiki_views_direct</span>(x)</span>
-<span id="cb12-28"><a></a>  }))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="datenanalyse-durchschnittswerte" class="slide level2">
 <h2>Datenanalyse: Durchschnittswerte</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a>plot_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a></a>  <span class="fu">filter</span>(female <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span> <span class="co"># Nur männlich (0) und weiblich (1)</span></span>
-<span id="cb13-3"><a></a>  <span class="fu">mutate</span>(<span class="at">Geschlecht =</span> <span class="fu">ifelse</span>(female <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"Weiblich"</span>, <span class="st">"Männlich"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a></a>  <span class="fu">group_by</span>(Geschlecht) <span class="sc">%&gt;%</span></span>
-<span id="cb13-5"><a></a>  <span class="fu">summarise</span>(</span>
-<span id="cb13-6"><a></a>    <span class="at">avg_length =</span> <span class="fu">mean</span>(article_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-7"><a></a>    <span class="at">sd_length =</span> <span class="fu">sd</span>(article_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-8"><a></a>    <span class="at">avg_backl =</span> <span class="fu">mean</span>(article_backl, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-9"><a></a>    <span class="at">sd_backl =</span> <span class="fu">sd</span>(article_backl, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-10"><a></a>    <span class="at">avg_views =</span> <span class="fu">mean</span>(total_views, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb13-11"><a></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
-<span id="cb13-12"><a></a>  )</span>
-<span id="cb13-13"><a></a></span>
-<span id="cb13-14"><a></a>plot_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>plot_data <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a></a>  <span class="fu">filter</span>(female <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>)) <span class="sc">%&gt;%</span> <span class="co"># Nur männlich (0) und weiblich (1)</span></span>
+<span id="cb12-3"><a></a>  <span class="fu">mutate</span>(<span class="at">Geschlecht =</span> <span class="fu">ifelse</span>(female <span class="sc">==</span> <span class="dv">1</span>, <span class="st">"Weiblich"</span>, <span class="st">"Männlich"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a></a>  <span class="fu">group_by</span>(Geschlecht) <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a></a>  <span class="fu">summarise</span>(</span>
+<span id="cb12-6"><a></a>    <span class="at">avg_length =</span> <span class="fu">mean</span>(article_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-7"><a></a>    <span class="at">sd_length =</span> <span class="fu">sd</span>(article_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-8"><a></a>    <span class="at">avg_backl =</span> <span class="fu">mean</span>(article_backl, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-9"><a></a>    <span class="at">sd_backl =</span> <span class="fu">sd</span>(article_backl, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb12-10"><a></a>    <span class="at">n =</span> <span class="fu">n</span>()</span>
+<span id="cb12-11"><a></a>  )</span>
+<span id="cb12-12"><a></a></span>
+<span id="cb12-13"><a></a>plot_data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 7
-  Geschlecht avg_length sd_length avg_backl sd_backl avg_views     n
-  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;
-1 Männlich       13362.    19129.      57.3     83.9    31135.   427
-2 Weiblich       13241.    15281.      63.8     81.8    40047.   206</code></pre>
+<pre><code># A tibble: 2 × 6
+  Geschlecht avg_length sd_length avg_backl sd_backl     n
+  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;
+1 Männlich       13363.    19130.      57.3     83.9   427
+2 Weiblich       13274.    15295.      63.8     81.8   206</code></pre>
 </div>
 </div>
 </section>
 <section id="datenanalyse-t-test-artikellänge" class="slide level2">
 <h2>Datenanalyse: t-Test Artikellänge</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a></a>  <span class="fu">filter</span>(female <span class="sc">&lt;</span><span class="dv">2</span>)</span>
-<span id="cb15-3"><a></a>t_test_result <span class="ot">&lt;-</span> <span class="fu">t.test</span>(article_length <span class="sc">~</span> female, <span class="at">data =</span> df)</span>
-<span id="cb15-4"><a></a>t_test_result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a></a>  <span class="fu">filter</span>(female <span class="sc">&lt;</span><span class="dv">2</span>)</span>
+<span id="cb14-3"><a></a>t_test_result <span class="ot">&lt;-</span> <span class="fu">t.test</span>(article_length <span class="sc">~</span> female, <span class="at">data =</span> df)</span>
+<span id="cb14-4"><a></a>t_test_result</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
 
 data:  article_length by female
-t = 0.085348, df = 495.78, p-value = 0.932
+t = 0.06283, df = 495.4, p-value = 0.9499
 alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 95 percent confidence interval:
- -2651.580  2892.407
+ -2684.799  2862.183
 sample estimates:
 mean in group 0 mean in group 1 
-       13361.57        13241.16 </code></pre>
+       13363.12        13274.43 </code></pre>
 </div>
 </div>
 </section>
 <section id="visualisierung-artikellänge" class="slide level2">
 <h2>Visualisierung: Artikellänge</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_length, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
-<span id="cb17-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb17-3"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Männlich"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>, <span class="st">"Weiblich"</span> <span class="ot">=</span> <span class="st">"#e67e22"</span>)) <span class="sc">+</span></span>
-<span id="cb17-4"><a></a>  <span class="co"># Beschriftungen</span></span>
-<span id="cb17-5"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb17-6"><a></a>    <span class="at">title =</span> <span class="st">"Durchschnittliche Wikipedia-Artikellänge nach Geschlecht"</span>,</span>
-<span id="cb17-7"><a></a>    <span class="at">subtitle =</span> <span class="st">"Abgeordnete des 21. Deutschen Bundestages"</span>,</span>
-<span id="cb17-8"><a></a>    <span class="at">x =</span> <span class="st">"Geschlecht"</span>,</span>
-<span id="cb17-9"><a></a>    <span class="at">y =</span> <span class="st">"Durchschnittliche Länge (Bytes)"</span>,</span>
-<span id="cb17-10"><a></a>    <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Quelle: Wikidata &amp; Wikipedia API | n ="</span>, <span class="fu">sum</span>(plot_data<span class="sc">$</span>n))</span>
-<span id="cb17-11"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb17-12"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb17-13"><a></a>  <span class="fu">theme</span>(</span>
-<span id="cb17-14"><a></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb17-15"><a></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb17-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_length, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
+<span id="cb16-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb16-3"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Männlich"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>, <span class="st">"Weiblich"</span> <span class="ot">=</span> <span class="st">"#e67e22"</span>)) <span class="sc">+</span></span>
+<span id="cb16-4"><a></a>  <span class="co"># Beschriftungen</span></span>
+<span id="cb16-5"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-6"><a></a>    <span class="at">title =</span> <span class="st">"Durchschnittliche Wikipedia-Artikellänge nach Geschlecht"</span>,</span>
+<span id="cb16-7"><a></a>    <span class="at">subtitle =</span> <span class="st">"Abgeordnete des 21. Deutschen Bundestages"</span>,</span>
+<span id="cb16-8"><a></a>    <span class="at">x =</span> <span class="st">"Geschlecht"</span>,</span>
+<span id="cb16-9"><a></a>    <span class="at">y =</span> <span class="st">"Durchschnittliche Länge (Bytes)"</span>,</span>
+<span id="cb16-10"><a></a>    <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Quelle: Wikidata &amp; Wikipedia API | n ="</span>, <span class="fu">sum</span>(plot_data<span class="sc">$</span>n))</span>
+<span id="cb16-11"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb16-12"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb16-13"><a></a>  <span class="fu">theme</span>(</span>
+<span id="cb16-14"><a></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb16-15"><a></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb16-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
+<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="datenanalyse-t-test-backlinks" class="slide level2">
 <h2>Datenanalyse: t-Test Backlinks</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span></span>
-<span id="cb18-2"><a></a>  <span class="fu">filter</span>(female <span class="sc">&lt;</span><span class="dv">2</span>)</span>
-<span id="cb18-3"><a></a>t_test_result2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(article_backl <span class="sc">~</span> female, <span class="at">data =</span> df)</span>
-<span id="cb18-4"><a></a>t_test_result2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>df <span class="ot">=</span> df <span class="sc">%&gt;%</span></span>
+<span id="cb17-2"><a></a>  <span class="fu">filter</span>(female <span class="sc">&lt;</span><span class="dv">2</span>)</span>
+<span id="cb17-3"><a></a>t_test_result2 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(article_backl <span class="sc">~</span> female, <span class="at">data =</span> df)</span>
+<span id="cb17-4"><a></a>t_test_result2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
 
 data:  article_backl by female
-t = -0.92917, df = 414.56, p-value = 0.3533
+t = -0.93028, df = 414.47, p-value = 0.3528
 alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 95 percent confidence interval:
- -20.267282   7.256868
+ -20.274367   7.248879
 sample estimates:
 mean in group 0 mean in group 1 
-       57.27635        63.78155 </code></pre>
+       57.28337        63.79612 </code></pre>
 </div>
 </div>
 </section>
 <section id="visualisierung-backlinks" class="slide level2">
 <h2>Visualisierung: Backlinks</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_backl, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
-<span id="cb20-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb20-3"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Männlich"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>, <span class="st">"Weiblich"</span> <span class="ot">=</span> <span class="st">"#e67e22"</span>)) <span class="sc">+</span></span>
-<span id="cb20-4"><a></a>  <span class="co"># Beschriftungen</span></span>
-<span id="cb20-5"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb20-6"><a></a>    <span class="at">title =</span> <span class="st">"Durchschnittliche Wikipedia-Backlinks nach Geschlecht"</span>,</span>
-<span id="cb20-7"><a></a>    <span class="at">subtitle =</span> <span class="st">"Abgeordnete des 21. Deutschen Bundestages"</span>,</span>
-<span id="cb20-8"><a></a>    <span class="at">x =</span> <span class="st">"Geschlecht"</span>,</span>
-<span id="cb20-9"><a></a>    <span class="at">y =</span> <span class="st">"Durchschnittliche Backlinks (Anzahl)"</span>,</span>
-<span id="cb20-10"><a></a>    <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Quelle: Wikidata &amp; Wikipedia API | n ="</span>, <span class="fu">sum</span>(plot_data<span class="sc">$</span>n))</span>
-<span id="cb20-11"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb20-12"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
-<span id="cb20-13"><a></a>  <span class="fu">theme</span>(</span>
-<span id="cb20-14"><a></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb20-15"><a></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb20-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_backl, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
+<span id="cb19-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb19-3"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Männlich"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>, <span class="st">"Weiblich"</span> <span class="ot">=</span> <span class="st">"#e67e22"</span>)) <span class="sc">+</span></span>
+<span id="cb19-4"><a></a>  <span class="co"># Beschriftungen</span></span>
+<span id="cb19-5"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb19-6"><a></a>    <span class="at">title =</span> <span class="st">"Durchschnittliche Wikipedia-Backlinks nach Geschlecht"</span>,</span>
+<span id="cb19-7"><a></a>    <span class="at">subtitle =</span> <span class="st">"Abgeordnete des 21. Deutschen Bundestages"</span>,</span>
+<span id="cb19-8"><a></a>    <span class="at">x =</span> <span class="st">"Geschlecht"</span>,</span>
+<span id="cb19-9"><a></a>    <span class="at">y =</span> <span class="st">"Durchschnittliche Backlinks (Anzahl)"</span>,</span>
+<span id="cb19-10"><a></a>    <span class="at">caption =</span> <span class="fu">paste</span>(<span class="st">"Quelle: Wikidata &amp; Wikipedia API | n ="</span>, <span class="fu">sum</span>(plot_data<span class="sc">$</span>n))</span>
+<span id="cb19-11"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb19-12"><a></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb19-13"><a></a>  <span class="fu">theme</span>(</span>
+<span id="cb19-14"><a></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb19-15"><a></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb19-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a></a><span class="fu">table</span>(df<span class="sc">$</span>genderLabel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">table</span>(df<span class="sc">$</span>genderLabel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 männlich weiblich 
      427      206 </code></pre>
 </div>
 </div>
-<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
-<section id="datenanalyse-t-test-pageviews" class="slide level2">
-<h2>Datenanalyse: t-Test Pageviews</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a></a>t_test_result3 <span class="ot">&lt;-</span> <span class="fu">t.test</span>(total_views <span class="sc">~</span> female, <span class="at">data =</span> df)</span>
-<span id="cb23-2"><a></a>t_test_result3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    Welch Two Sample t-test
-
-data:  total_views by female
-t = -0.36692, df = 10.879, p-value = 0.7207
-alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
-95 percent confidence interval:
- -62439.35  44616.62
-sample estimates:
-mean in group 0 mean in group 1 
-       31135.44        40046.80 </code></pre>
-</div>
-</div>
-</section>
+<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
 <section id="the-end" class="slide level2">
 <h2>The end</h2>
 

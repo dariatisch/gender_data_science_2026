@@ -592,14 +592,14 @@
     "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-durchschnittswerte",
     "title": "Gender Aspekte der Data Science",
     "section": "Datenanalyse: Durchschnittswerte",
-    "text": "Datenanalyse: Durchschnittswerte\n\nplot_data &lt;- df %&gt;%\n  filter(female %in% c(0, 1)) %&gt;% # Nur männlich (0) und weiblich (1)\n  mutate(Geschlecht = ifelse(female == 1, \"Weiblich\", \"Männlich\")) %&gt;%\n  group_by(Geschlecht) %&gt;%\n  summarise(\n    avg_length = mean(article_length, na.rm = TRUE),\n    sd_length = sd(article_length, na.rm = TRUE),\n    avg_backl = mean(article_backl, na.rm = TRUE),\n    sd_backl = sd(article_backl, na.rm = TRUE),\n    avg_views = mean(total_views, na.rm = TRUE),\n    n = n()\n  )\n\nplot_data\n\n# A tibble: 2 × 7\n  Geschlecht avg_length sd_length avg_backl sd_backl avg_views     n\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;int&gt;\n1 Männlich       13362.    19129.      57.3     83.9    31135.   427\n2 Weiblich       13241.    15281.      63.8     81.8    40047.   206"
+    "text": "Datenanalyse: Durchschnittswerte\n\nplot_data &lt;- df %&gt;%\n  filter(female %in% c(0, 1)) %&gt;% # Nur männlich (0) und weiblich (1)\n  mutate(Geschlecht = ifelse(female == 1, \"Weiblich\", \"Männlich\")) %&gt;%\n  group_by(Geschlecht) %&gt;%\n  summarise(\n    avg_length = mean(article_length, na.rm = TRUE),\n    sd_length = sd(article_length, na.rm = TRUE),\n    avg_backl = mean(article_backl, na.rm = TRUE),\n    sd_backl = sd(article_backl, na.rm = TRUE),\n    n = n()\n  )\n\nplot_data\n\n# A tibble: 2 × 6\n  Geschlecht avg_length sd_length avg_backl sd_backl     n\n  &lt;chr&gt;           &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;int&gt;\n1 Männlich       13363.    19130.      57.3     83.9   427\n2 Weiblich       13274.    15295.      63.8     81.8   206"
   },
   {
     "objectID": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-artikellänge",
     "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-artikellänge",
     "title": "Gender Aspekte der Data Science",
     "section": "Datenanalyse: t-Test Artikellänge",
-    "text": "Datenanalyse: t-Test Artikellänge\n\ndf = df %&gt;%\n  filter(female &lt;2)\nt_test_result &lt;- t.test(article_length ~ female, data = df)\nt_test_result\n\n\n    Welch Two Sample t-test\n\ndata:  article_length by female\nt = 0.085348, df = 495.78, p-value = 0.932\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -2651.580  2892.407\nsample estimates:\nmean in group 0 mean in group 1 \n       13361.57        13241.16"
+    "text": "Datenanalyse: t-Test Artikellänge\n\ndf = df %&gt;%\n  filter(female &lt;2)\nt_test_result &lt;- t.test(article_length ~ female, data = df)\nt_test_result\n\n\n    Welch Two Sample t-test\n\ndata:  article_length by female\nt = 0.06283, df = 495.4, p-value = 0.9499\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -2684.799  2862.183\nsample estimates:\nmean in group 0 mean in group 1 \n       13363.12        13274.43"
   },
   {
     "objectID": "slides_quarto/03b_gender_data_science.html#visualisierung-artikellänge",
@@ -613,7 +613,7 @@
     "href": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-backlinks",
     "title": "Gender Aspekte der Data Science",
     "section": "Datenanalyse: t-Test Backlinks",
-    "text": "Datenanalyse: t-Test Backlinks\n\ndf = df %&gt;%\n  filter(female &lt;2)\nt_test_result2 &lt;- t.test(article_backl ~ female, data = df)\nt_test_result2\n\n\n    Welch Two Sample t-test\n\ndata:  article_backl by female\nt = -0.92917, df = 414.56, p-value = 0.3533\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -20.267282   7.256868\nsample estimates:\nmean in group 0 mean in group 1 \n       57.27635        63.78155"
+    "text": "Datenanalyse: t-Test Backlinks\n\ndf = df %&gt;%\n  filter(female &lt;2)\nt_test_result2 &lt;- t.test(article_backl ~ female, data = df)\nt_test_result2\n\n\n    Welch Two Sample t-test\n\ndata:  article_backl by female\nt = -0.93028, df = 414.47, p-value = 0.3528\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -20.274367   7.248879\nsample estimates:\nmean in group 0 mean in group 1 \n       57.28337        63.79612"
   },
   {
     "objectID": "slides_quarto/03b_gender_data_science.html#visualisierung-backlinks",

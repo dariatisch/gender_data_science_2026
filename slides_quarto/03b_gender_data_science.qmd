@@ -215,44 +215,6 @@ df <- df %>%
 ```
 
 
-
----
-
-
-## Wikipedia Pageviews extrahieren 
-
-```{r}
-get_wiki_views_direct <- function(title) {
-  # Wir müssen Leerzeichen in Titeln für die URL mit %20 kodieren
-  safe_title <- URLencode(title, reserved = TRUE)
-  
-  # Die URL der Wikimedia API für Pageviews (kumuliert für 2025)
-  # Struktur: project/access/agent/article/granularity/start/end
-  url <- paste0(
-    "https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/de.wikipedia/all-access/user/",
-    safe_title,
-    "/monthly/2025042700/2026042700"
-  )
-  
-  res <- GET(url, add_headers(`User-Agent` = "Daria Tisch, TH Nuernberg"))
-  
-  if (status_code(res) == 200) {
-    data <- fromJSON(content(res, as = "text", encoding = "UTF-8"))
-    return(sum(data$items$views))
-  } else {
-    return(NA) # Falls die API die Seite nicht findet
-  }
-}
-
-# Anwendung auf deine Titel
-df <- df %>%
-  mutate(total_views = map_dbl(titles, function(x) {
-    Sys.sleep(0.001) # Kurze Pause zur Schonung der API
-    get_wiki_views_direct(x)
-  }))
-
-
-```
 ---
 
 ## Datenanalyse: Durchschnittswerte
@@ -267,7 +229,6 @@ plot_data <- df %>%
     sd_length = sd(article_length, na.rm = TRUE),
     avg_backl = mean(article_backl, na.rm = TRUE),
     sd_backl = sd(article_backl, na.rm = TRUE),
-    avg_views = mean(total_views, na.rm = TRUE),
     n = n()
   )
 
@@ -343,15 +304,7 @@ ggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +
 
 table(df$genderLabel)
 ```
----
 
-## Datenanalyse: t-Test Pageviews
-
-```{r}
-
-t_test_result3 <- t.test(total_views ~ female, data = df)
-t_test_result3
-```
 
 
 ---
