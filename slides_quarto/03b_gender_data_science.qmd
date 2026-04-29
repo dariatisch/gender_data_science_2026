@@ -250,7 +250,7 @@ t_test_result
 ## Visualisierung: Artikellänge
 
 ```{r}
-ggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +
+g_length = ggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +
   geom_bar(stat = "identity", width = 0.6, show.legend = FALSE) +
   scale_fill_manual(values = c("Männlich" = "#3498db", "Weiblich" = "#e67e22")) +
   # Beschriftungen
@@ -270,6 +270,13 @@ ggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +
 ---
 
 
+## Visualisierung: Artikellänge
+```{r}
+#| echo: false
+
+g_length
+```
+
 ## Datenanalyse: t-Test Backlinks
 
 ```{r}
@@ -284,7 +291,7 @@ t_test_result2
 ## Visualisierung: Backlinks
 
 ```{r}
-ggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +
+g_backl = ggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +
   geom_bar(stat = "identity", width = 0.6, show.legend = FALSE) +
   scale_fill_manual(values = c("Männlich" = "#3498db", "Weiblich" = "#e67e22")) +
   # Beschriftungen
@@ -305,8 +312,13 @@ ggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +
 table(df$genderLabel)
 ```
 
+---
+## Visualisierung: Backlinks
+```{r}
+#| echo: false
 
-
+g_backl
+```
 ---
 ## The end
 

@@ -438,7 +438,7 @@ mean in group 0 mean in group 1
 <section id="visualisierung-artikellänge" class="slide level2">
 <h2>Visualisierung: Artikellänge</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_length, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>g_length <span class="ot">=</span> <span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_length, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
 <span id="cb16-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb16-3"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Männlich"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>, <span class="st">"Weiblich"</span> <span class="ot">=</span> <span class="st">"#e67e22"</span>)) <span class="sc">+</span></span>
 <span id="cb16-4"><a></a>  <span class="co"># Beschriftungen</span></span>
@@ -454,9 +454,12 @@ mean in group 0 mean in group 1
 <span id="cb16-14"><a></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb16-15"><a></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
 <span id="cb16-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
 </div>
-<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+</section>
+<section id="visualisierung-artikellänge-1" class="slide level2">
+<h2>Visualisierung: Artikellänge</h2>
+
+<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
 <section id="datenanalyse-t-test-backlinks" class="slide level2">
 <h2>Datenanalyse: t-Test Backlinks</h2>
 <div class="cell">
@@ -482,7 +485,7 @@ mean in group 0 mean in group 1
 <section id="visualisierung-backlinks" class="slide level2">
 <h2>Visualisierung: Backlinks</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_backl, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a>g_backl <span class="ot">=</span> <span class="fu">ggplot</span>(plot_data, <span class="fu">aes</span>(<span class="at">x =</span> Geschlecht, <span class="at">y =</span> avg_backl, <span class="at">fill =</span> Geschlecht)) <span class="sc">+</span></span>
 <span id="cb19-2"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.6</span>, <span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
 <span id="cb19-3"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Männlich"</span> <span class="ot">=</span> <span class="st">"#3498db"</span>, <span class="st">"Weiblich"</span> <span class="ot">=</span> <span class="st">"#e67e22"</span>)) <span class="sc">+</span></span>
 <span id="cb19-4"><a></a>  <span class="co"># Beschriftungen</span></span>
@@ -497,16 +500,21 @@ mean in group 0 mean in group 1
 <span id="cb19-13"><a></a>  <span class="fu">theme</span>(</span>
 <span id="cb19-14"><a></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
 <span id="cb19-15"><a></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb19-16"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">table</span>(df<span class="sc">$</span>genderLabel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-16"><a></a>  )</span>
+<span id="cb19-17"><a></a></span>
+<span id="cb19-18"><a></a></span>
+<span id="cb19-19"><a></a><span class="fu">table</span>(df<span class="sc">$</span>genderLabel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 männlich weiblich 
      427      206 </code></pre>
 </div>
 </div>
-<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"></section>
+</section>
+<section id="visualisierung-backlinks-1" class="slide level2">
+<h2>Visualisierung: Backlinks</h2>
+
+<img data-src="03b_gender_data_science_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="the-end" class="slide level2">
 <h2>The end</h2>
 

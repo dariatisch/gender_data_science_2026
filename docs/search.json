@@ -606,7 +606,7 @@
     "href": "slides_quarto/03b_gender_data_science.html#visualisierung-artikellänge",
     "title": "Gender Aspekte der Data Science",
     "section": "Visualisierung: Artikellänge",
-    "text": "Visualisierung: Artikellänge\n\nggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +\n  geom_bar(stat = \"identity\", width = 0.6, show.legend = FALSE) +\n  scale_fill_manual(values = c(\"Männlich\" = \"#3498db\", \"Weiblich\" = \"#e67e22\")) +\n  # Beschriftungen\n  labs(\n    title = \"Durchschnittliche Wikipedia-Artikellänge nach Geschlecht\",\n    subtitle = \"Abgeordnete des 21. Deutschen Bundestages\",\n    x = \"Geschlecht\",\n    y = \"Durchschnittliche Länge (Bytes)\",\n    caption = paste(\"Quelle: Wikidata & Wikipedia API | n =\", sum(plot_data$n))\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.major.x = element_blank()\n  )"
+    "text": "Visualisierung: Artikellänge\n\ng_length = ggplot(plot_data, aes(x = Geschlecht, y = avg_length, fill = Geschlecht)) +\n  geom_bar(stat = \"identity\", width = 0.6, show.legend = FALSE) +\n  scale_fill_manual(values = c(\"Männlich\" = \"#3498db\", \"Weiblich\" = \"#e67e22\")) +\n  # Beschriftungen\n  labs(\n    title = \"Durchschnittliche Wikipedia-Artikellänge nach Geschlecht\",\n    subtitle = \"Abgeordnete des 21. Deutschen Bundestages\",\n    x = \"Geschlecht\",\n    y = \"Durchschnittliche Länge (Bytes)\",\n    caption = paste(\"Quelle: Wikidata & Wikipedia API | n =\", sum(plot_data$n))\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.major.x = element_blank()\n  )"
   },
   {
     "objectID": "slides_quarto/03b_gender_data_science.html#datenanalyse-t-test-backlinks",
@@ -620,7 +620,7 @@
     "href": "slides_quarto/03b_gender_data_science.html#visualisierung-backlinks",
     "title": "Gender Aspekte der Data Science",
     "section": "Visualisierung: Backlinks",
-    "text": "Visualisierung: Backlinks\n\nggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +\n  geom_bar(stat = \"identity\", width = 0.6, show.legend = FALSE) +\n  scale_fill_manual(values = c(\"Männlich\" = \"#3498db\", \"Weiblich\" = \"#e67e22\")) +\n  # Beschriftungen\n  labs(\n    title = \"Durchschnittliche Wikipedia-Backlinks nach Geschlecht\",\n    subtitle = \"Abgeordnete des 21. Deutschen Bundestages\",\n    x = \"Geschlecht\",\n    y = \"Durchschnittliche Backlinks (Anzahl)\",\n    caption = paste(\"Quelle: Wikidata & Wikipedia API | n =\", sum(plot_data$n))\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.major.x = element_blank()\n  )\n\ntable(df$genderLabel)\n\n\nmännlich weiblich \n     427      206"
+    "text": "Visualisierung: Backlinks\n\ng_backl = ggplot(plot_data, aes(x = Geschlecht, y = avg_backl, fill = Geschlecht)) +\n  geom_bar(stat = \"identity\", width = 0.6, show.legend = FALSE) +\n  scale_fill_manual(values = c(\"Männlich\" = \"#3498db\", \"Weiblich\" = \"#e67e22\")) +\n  # Beschriftungen\n  labs(\n    title = \"Durchschnittliche Wikipedia-Backlinks nach Geschlecht\",\n    subtitle = \"Abgeordnete des 21. Deutschen Bundestages\",\n    x = \"Geschlecht\",\n    y = \"Durchschnittliche Backlinks (Anzahl)\",\n    caption = paste(\"Quelle: Wikidata & Wikipedia API | n =\", sum(plot_data$n))\n  ) +\n  theme_minimal(base_size = 14) +\n  theme(\n    plot.title = element_text(face = \"bold\"),\n    panel.grid.major.x = element_blank()\n  )\n\n\ntable(df$genderLabel)\n\n\nmännlich weiblich \n     427      206"
   },
   {
     "objectID": "slides_quarto/03b_gender_data_science.html#wikipedia-pageviews-extrahieren",
@@ -635,5 +635,19 @@
     "title": "Gender Aspekte der Data Science",
     "section": "Datenanalyse: t-Test Pageviews",
     "text": "Datenanalyse: t-Test Pageviews\n\nt_test_result3 &lt;- t.test(total_views ~ female, data = df)\nt_test_result3\n\n\n    Welch Two Sample t-test\n\ndata:  total_views by female\nt = -0.36692, df = 10.879, p-value = 0.7207\nalternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0\n95 percent confidence interval:\n -62439.35  44616.62\nsample estimates:\nmean in group 0 mean in group 1 \n       31135.44        40046.80"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#visualisierung-artikellänge-1",
+    "href": "slides_quarto/03b_gender_data_science.html#visualisierung-artikellänge-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Visualisierung: Artikellänge",
+    "text": "Visualisierung: Artikellänge"
+  },
+  {
+    "objectID": "slides_quarto/03b_gender_data_science.html#visualisierung-backlinks-1",
+    "href": "slides_quarto/03b_gender_data_science.html#visualisierung-backlinks-1",
+    "title": "Gender Aspekte der Data Science",
+    "section": "Visualisierung: Backlinks",
+    "text": "Visualisierung: Backlinks"
   }
 ]
