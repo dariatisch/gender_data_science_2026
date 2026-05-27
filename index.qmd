@@ -29,6 +29,7 @@ Hier findet Ihr alle Unterlagen zum Download bzw. Anschauen:
 * [Übungsfolien (Quarto)](slides_quarto/03b_gender_data_science.html)
 
 ### Sitzung 4: Gender Bias im gesamten Datenprozess
+* [Vorlesungsfolien (PDF)](slides_pdf/04a_gender_data_science.pdf)
 
 ### Sitzung 5: Thematische Vertiefung – Gender Bias im Gesundheitsbereich
 
